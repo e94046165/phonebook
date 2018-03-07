@@ -13,6 +13,7 @@
 #endif
 
 #define DICT_FILE "./dictionary/words.txt"
+//int length = 0;
 
 static double diff_in_second(struct timespec t1, struct timespec t2)
 {
@@ -26,7 +27,14 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
     }
     return (diff.tv_sec + diff.tv_nsec / 1000000000.0);
 }
-
+//function to find the longest strlen
+/*
+int longest(char lastName[]){
+	if(strlen(lastName)>length){
+		length = strlen(lastName);
+	}
+}
+*/
 int main(int argc, char *argv[])
 {
     FILE *fp;
@@ -59,7 +67,9 @@ int main(int argc, char *argv[])
         line[i - 1] = '\0';
         i = 0;
         e = append(line, e);
+        //longest(e->lastName);
     }
+    //printf("the max length : %d\n", length);
     clock_gettime(CLOCK_REALTIME, &end);
     cpu_time1 = diff_in_second(start, end);
 
@@ -75,7 +85,6 @@ int main(int argc, char *argv[])
     assert(findName(input, e) &&
            "Did you implement findName() in " IMPL "?");
     assert(0 == strcmp(findName(input, e)->lastName, "zyxel"));
-
 #if defined(__GNUC__)
     __builtin___clear_cache((char *) pHead, (char *) pHead + sizeof(entry));
 #endif

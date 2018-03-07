@@ -11,4 +11,4 @@ calculate
 orig.txt
 opt.txt
 output.txt
-runtime.png
+*.png
