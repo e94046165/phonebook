@@ -8,6 +8,7 @@
 /* TODO: After modifying the original version, uncomment the following
  * line to set OPT properly */
 #define OPT 1
+#define HASH1 1
 
 typedef struct __attribute__((packed)) __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];

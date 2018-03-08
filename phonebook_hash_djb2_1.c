@@ -1,6 +1,6 @@
 #include <stdlib.h>
 
-#include "phonebook_opt.h"
+#include "phonebook_hash_djb2_1.h"
 
 /* TODO: FILL YOUR OWN IMPLEMENTATION HERE! */
 unsigned long hash(unsigned char *str)
