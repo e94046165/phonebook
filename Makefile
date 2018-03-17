@@ -1,9 +1,10 @@
+## this Makefile is for generate distribution of hashtable
 CC ?= gcc
 CFLAGS_common ?= -Wall -std=gnu99
 CFLAGS__hash_djb2_1 = -O0
 CFLAGS__hash_djb2_2  = -O0
 
-EXEC = phonebook_hash_djb2_1 phonebook_hash_djb2_2 phonebook_hash_djb2_3
+EXEC = phonebook_hash_djb2_1 phonebook_hash_jdbm
 
 GIT_HOOKS := .git/hooks/applied
 .PHONY: all
@@ -20,43 +21,33 @@ phonebook_hash_djb2_1: $(SRCS_common) phonebook_hash_djb2_1.c phonebook_hash_djb
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 
-phonebook_hash_djb2_2: $(SRCS_common) phonebook_hash_djb2_2.c phonebook_hash_djb2_2.h
+phonebook_hash_jdbm: $(SRCS_common) phonebook_hash_jdbm.c phonebook_hash_jdbm.h
 	$(CC) $(CFLAGS_common) $(CFLAGS__hash_djb2_2) \
 		-DIMPL="\"$@.h\"" -o $@ \
 		$(SRCS_common) $@.c
 		
-phonebook_hash_djb2_3: $(SRCS_common) phonebook_hash_djb2_3.c phonebook_hash_djb2_3.h
-	$(CC) $(CFLAGS_common) $(CFLAGS_hash_djb2.c) \
-		-DIMPL="\"$@.h\"" -o $@ \
-		$(SRCS_common) $@.c
 		
-
 run: $(EXEC)
 	echo 3 | sudo tee /proc/sys/vm/drop_caches
-	watch -d -t "./phonebook_hash_djb2 && echo 3 | sudo tee /proc/sys/vm/drop_caches"
+	watch -d -t "./phonebook_hash_jdbm && echo 3 | sudo tee /proc/sys/vm/drop_caches"
 
 cache-test: $(EXEC)
 	rm -f ./*.txt
-	perf stat --repeat 100 \
+	perf stat --repeat 1 \
 		-e cache-misses,cache-references,instructions,cycles \
 		./phonebook_hash_djb2_1
-	perf stat --repeat 100 \
+	perf stat --repeat 1 \
 		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_hash_djb2_2
-	perf stat --repeat 100 \
-		-e cache-misses,cache-references,instructions,cycles \
-		./phonebook_hash_djb2_3
+		./phonebook_hash_jdbm
 
-output.txt: cache-test calculate
-	./calculate
+plot: cache-test
+	gnuplot scripts/distribution_djb2.gp
+	gnuplot scripts/distribution_jdbm.gp
 
-plot: output.txt
-	gnuplot scripts/runtime_2.gp
-
-calculate: calculate_2.c
+calculate: calculate.c
 	$(CC) $(CFLAGS_common) $^ -o $@
 
 .PHONY: clean
 clean:
 	$(RM) $(EXEC) *.o perf.* \
-	      	calculate hash1.txt hash2.txt hash3.txt output.txt runtime.png
+	      	calculate hash1.txt hash2.txt output.txt distribution_djb2.png distribution_jdbm.png

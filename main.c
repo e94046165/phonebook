@@ -8,6 +8,8 @@
 
 #define DICT_FILE "./dictionary/words.txt"
 
+//Notice: the main function is only for generating distribution plot of hash table
+
 static double diff_in_second(struct timespec t1, struct timespec t2)
 {
     struct timespec diff;
@@ -34,6 +36,7 @@ static double diff_in_second(struct timespec t1, struct timespec t2)
 #ifdef HASH3
 #define OUT_FILE "hash3.txt"
 #endif
+
 
 int main(int argc, char *argv[])
 {
@@ -69,6 +72,7 @@ int main(int argc, char *argv[])
         line[i - 1] = '\0';
         i = 0;
         e = append(line, pHead);
+
         //longest(e->lastName);
     }
 
@@ -96,20 +100,24 @@ int main(int argc, char *argv[])
     cpu_time2 = diff_in_second(start, end);
 
     FILE *output = fopen(OUT_FILE, "a");
-    fprintf(output, "append() findName() %lf %lf\n", cpu_time1, cpu_time2);
-    fclose(output);
+    //fprintf(output, "append() findName() %lf %lf\n", cpu_time1, cpu_time2);
+
 
     printf("execution time of append() : %lf sec\n", cpu_time1);
     printf("execution time of findName() : %lf sec\n", cpu_time2);
 
-    for (i = 0; i < HASH_TABLE_SIZE; ++i) {
+    for (i = 0; i < HASH_TABLE_SIZE; i++) {
         entry *temp;
+        //printf("%d %d\n", i, pHead[i]->count);
+        fprintf(output, "%d %d\n", i, pHead[i]->count);
+
         while(pHead[i]) {
             temp = pHead[i]->pNext;
             free(pHead[i]);
             pHead[i] = temp;
         }
     }
+    fclose(output);
     return 0;
 }
 
