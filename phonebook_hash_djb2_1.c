@@ -38,6 +38,6 @@ entry *append(char lastName[], entry **pHead)
     e->pNext = pHead[index]->pNext;
     pHead[index]->pNext = e;
     strcpy(e->lastName, lastName);
-
+    pHead[index]->count++;
     return e;
 }

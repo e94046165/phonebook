@@ -2,7 +2,7 @@
 #define _PHONEBOOK_H
 
 #define MAX_LAST_NAME_SIZE 16
-#define HASH_TABLE_SIZE 128
+#define HASH_TABLE_SIZE 1024
 
 
 /* TODO: After modifying the original version, uncomment the following
@@ -12,6 +12,7 @@
 
 typedef struct __attribute__((packed)) __PHONE_BOOK_ENTRY {
     char lastName[MAX_LAST_NAME_SIZE];
+    int count;
     struct __PHONE_BOOK_DETAIL *additional_details;
     struct __PHONE_BOOK_ENTRY *pNext;
 } entry;

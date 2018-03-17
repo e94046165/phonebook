@@ -37,7 +37,7 @@ entry *append(char lastName[], entry **pHead)
     entry *e = (entry *) malloc(sizeof(entry));
     e->pNext = pHead[index]->pNext;
     pHead[index]->pNext = e;
+    pHead[index]->count++;
     strcpy(e->lastName, lastName);
-
     return e;
 }
